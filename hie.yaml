@@ -1,0 +1,16 @@
+cradle:
+  multi:
+    # - path: "ignore/"
+    #   config: {cradle: {none: }}
+
+    - path: "src"
+      config: {cradle: {cabal: {component: "lib:hledger-importer"}}}
+
+    - path: "app"
+      config: {cradle: {cabal: {component: "hledger-importer:hledger-importer-exe"}}}
+
+    - path: "test"
+      config: {cradle: {cabal: {component: "hledger-importer:hledger-importer-test"}}}
+
+    - path: "bench"
+      config: {cradle: {cabal: {component: "hledger-importer:hledger-importer-bench"}}}

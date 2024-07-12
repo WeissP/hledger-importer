@@ -1,0 +1,11 @@
+packages:
+  ./
+
+package hledger-importer
+  tests: True
+
+source-repository-package
+  type: git
+  location: https://github.com/WeissP/pahs.git
+  tag: 7827431be418c1afd100b37a5f7486d398d5b6a0
+  --sha256: RMF97L2zDQ7SiWACQWzxN/VfCJ+CuXxCJ2lkoJtqgQk=

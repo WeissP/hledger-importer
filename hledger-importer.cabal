@@ -1,0 +1,181 @@
+cabal-version:   3.8
+name:            hledger-importer
+version:         0
+license:         BSD-3-Clause
+build-type:      Simple
+license-file:    LICENSE
+author:          weiss
+maintainer:      weiss <kingbaiing@163.com>
+copyright:       2024 weiss
+tested-with:     GHC ==8.6.5 || ==8.8.3 || ==8.10.7 || ==9.0.2 || ==9.2.2
+extra-doc-files:
+  CHANGELOG.md
+  README.md
+
+-- category:
+-- description:     description
+-- synopsis:        one-line synopsis
+-- homepage:        https://github.com/FIXME/hledger-importer#readme
+-- source-repository head
+--   type:     git
+--   location: git://github.com/FIXME/hledger-importer.git
+
+common common-options
+  build-depends:      base >=4.9 && <5
+  default-language:   Haskell2010
+  default-extensions:
+    ApplicativeDo
+    BangPatterns
+    BlockArguments
+    ConstraintKinds
+    DataKinds
+    DefaultSignatures
+    DeriveAnyClass
+    DeriveDataTypeable
+    DeriveFoldable
+    DeriveFunctor
+    DeriveGeneric
+    DeriveLift
+    DeriveTraversable
+    DerivingStrategies
+    DerivingVia
+    DisambiguateRecordFields
+    DuplicateRecordFields
+    EmptyCase
+    EmptyDataDecls
+    EmptyDataDeriving
+    ExistentialQuantification
+    ExplicitForAll
+    FlexibleContexts
+    FlexibleInstances
+    FunctionalDependencies
+    GADTSyntax
+    GeneralisedNewtypeDeriving
+    ImportQualifiedPost
+    KindSignatures
+    LambdaCase
+    MonadComprehensions
+    MultiParamTypeClasses
+    MultiWayIf
+    NoImplicitPrelude
+    NoStarIsType
+    NumericUnderscores
+    OverloadedStrings
+    PolyKinds
+    PostfixOperators
+    RankNTypes
+    RecordWildCards
+    ScopedTypeVariables
+    StandaloneDeriving
+    StandaloneKindSignatures
+    StrictData
+    TemplateHaskell
+    TupleSections
+    TypeApplications
+    TypeFamilies
+    TypeOperators
+    ViewPatterns
+
+  ghc-options:
+    -Wall -Wcompat -Widentities -Wincomplete-uni-patterns
+    -Wincomplete-record-updates -Wredundant-constraints
+    -fhide-source-paths -Wpartial-fields
+
+library
+  import:          common-options
+  hs-source-dirs:  src
+  build-depends:
+    , aeson
+    , aeson-pretty
+    , bytestring
+    , cassava
+    , cassava-conduit
+    , conduit
+    , containers
+    , data-default
+    , extra
+    , hledger-lib
+    , http-client
+    , http-client-tls
+    , lens
+    , lens-aeson
+    , mtl
+    , org-mode
+    , pahs
+    , regex-tdfa
+    , rio
+    , template-haskell
+    , time
+    , transformers
+    , validity
+    , validity-text
+    , wreq
+
+  exposed-modules:
+    Account.Comdirect
+    Account.Comdirect.Downloader
+    Account.Comdirect.Parser
+    Account.Comdirect.Types
+    Account.Commerzbank
+    Account.Downloadable
+    Account.Paypal
+    Account.Paypal.Downloader
+    Account.Paypal.Parser
+    Account.Paypal.Types
+    Catch
+    Lib
+    MyPrelude
+    RuleParser
+    RuleParser.Org.Conv
+    RuleParser.Org.Parser
+    RuleParser.Org.Types
+    RuleParser.Utils
+    SupportedAccount
+    Types
+    Types.Account
+    Types.ImportRule
+    Types.Record
+
+executable hledger-importer-exe
+  import:         common-options
+  hs-source-dirs: app
+  main-is:        Main.hs
+  other-modules:
+    AppTypes
+    JournalParser
+    Opts
+
+  build-depends:
+    , hledger
+    , hledger-importer
+    , hledger-lib
+    , optparse-applicative
+    , rio
+
+  ghc-options:    -threaded -rtsopts -with-rtsopts=-N
+
+test-suite hledger-importer-test
+  import:             common-options
+  type:               exitcode-stdio-1.0
+  hs-source-dirs:     test
+  main-is:            Main.hs
+  build-depends:
+    , genvalidity
+    , genvalidity-sydtest
+    , hledger-importer
+    , rio
+    , sydtest
+
+  build-tool-depends: sydtest-discover:sydtest-discover >=0.0.0.3
+  ghc-options:        -threaded -rtsopts -with-rtsopts=-N
+
+benchmark hledger-importer-bench
+  import:         common-options
+  type:           exitcode-stdio-1.0
+  hs-source-dirs: bench
+  main-is:        Main.hs
+  build-depends:
+    , criterion
+    , hledger-importer
+
+  ghc-options:    -threaded -rtsopts -with-rtsopts=-N

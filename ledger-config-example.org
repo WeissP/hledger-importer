@@ -1,0 +1,231 @@
+* Parse Rules
+:PROPERTIES:
+:passing-score: 10
+:finance-dir: /home/weiss/finance
+:END:
+
+** Supported Accounts
+
+Supported Accounts and their labels
+
+*** [[id:7d6f5420-da6f-4ebf-8e34-b534c0c0697f][Comdirect]]
+:PROPERTIES:
+:date-format: %Y-%m-%d
+:unknown-comment-labels: transactionType,holderName,remittanceInfo,creditorHolderName
+:raw-records-name: raw.json
+:import-records-name: comdirect.csv
+:END:
+
+**** remittanceInfo
+:PROPERTIES:
+:ID:       153396de-b38d-4ae5-829b-00dc1d9bb7bf
+:END:
+
+**** holderName
+:PROPERTIES:
+:ID:       98b5197e-af87-4e43-b9c5-125c4fec7589
+:END:
+
+**** creditorHolderName
+:PROPERTIES:
+:ID:       365b1f91-94e8-49d0-8049-9c78e798b47e
+:END:
+
+**** transactionType
+:PROPERTIES:
+:ID:       6986bc03-3fbc-4370-9911-f4432b5a7e20
+:END:
+
+*** [[id:a69aee3e-330f-45e2-a0c4-eef5b3cd7257][Paypal]]
+:PROPERTIES:
+:date-format: %Y-%m-%dT%H:%M:%S%z
+:unknown-comment-labels: alternate_full_name,item_name,email_address,event_code
+:raw-records-name: raw.json
+:import-records-name: paypal.csv
+:END:
+
+**** event_code
+:PROPERTIES:
+:ID:       59834a83-4e76-4c0e-a771-2c4c896fc393
+:END:
+
+**** subject
+:PROPERTIES:
+:ID:       0b2767f4-58dc-430d-a312-2c68b97d75fa
+:END:
+
+**** email_address
+:PROPERTIES:
+:ID:       db59cd1c-c257-4bf7-a118-540f8dd274b4
+:END:
+
+**** alternate_full_name
+:PROPERTIES:
+:ID:       1bcefe6b-644f-4abd-8dc7-e7ad38e1a771
+:END:
+
+**** full_name
+:PROPERTIES:
+:ID:       46aa27dd-69db-49dd-914b-626eef921e20
+:END:
+
+**** given_name
+:PROPERTIES:
+:ID:       98073ced-26a6-443c-a07e-05ee300c05bc
+:END:
+
+**** surname
+:PROPERTIES:
+:ID:       3adfa0de-f8d9-4873-9e49-a3adc2523966
+:END:
+**** item_name
+:PROPERTIES:
+:ID:       89381f29-bcae-4c16-9620-3036ce445b63
+:END:
+**** item_desc
+:PROPERTIES:
+:ID:       2b8fc728-7a8d-4d66-94f1-1396cb91ae04
+:END:
+
+*** [[id:4e6a038d-5686-4fd6-bf1f-18f258908a6d][CommerzBank]]
+:PROPERTIES:
+:date-format: %d.%m.%Y
+:unknown-comment-labels: Buchungstext
+:raw-records-name: raw.csv
+:import-records-name: commerz-bank.csv
+:END:
+
+**** Wertstellung
+:PROPERTIES:
+:ID:       dd8cc9f6-01b5-4695-a39b-33e9ac60d265
+:comment-tag: Wertstellung
+:END:
+
+**** Buchungstext
+:PROPERTIES:
+:ID:       1134f365-d0b1-4b78-88ef-881555edf06d
+:END:
+
+** filters
+
+All transactions matched here will be ignored
+
+*** [[id:59834a83-4e76-4c0e-a771-2c4c896fc393][event_code]]
+:PROPERTIES:
+:match-rule: Regexp
+:END:
+
+- T03.*
+- T1.*
+- T0700
+
+*** [[id:6986bc03-3fbc-4370-9911-f4432b5a7e20][transactionType]]
+:PROPERTIES:
+:score: 1
+:END:
+
+- TRANSFER
+
+** Descriptions
+
+The heading is the description that will be used if the target account is contained in the list inside the heading
+
+*** Einzahlung
+
+- [[id:82224fc1-73ae-46c8-a630-2d1fdef5145c][home]]
+
+*** Withdrawal
+
+- [[id:23b501d6-b472-49dc-a528-9576ad207bab][hand]]
+
+*** Transfer to Comdirect
+
+- [[id:7d6f5420-da6f-4ebf-8e34-b534c0c0697f][comdirect]]
+
+*** Transfer to PayPal
+
+- [[id:a69aee3e-330f-45e2-a0c4-eef5b3cd7257][paypal]]
+
+* Accounts
+** asserts
+*** cash
+**** home
+:PROPERTIES:
+:ID:       82224fc1-73ae-46c8-a630-2d1fdef5145c
+:END:
+
+**** hand
+:PROPERTIES:
+:ID:       23b501d6-b472-49dc-a528-9576ad207bab
+:END:
+
+***** [[id:1134f365-d0b1-4b78-88ef-881555edf06d][Buchungstext]]
+
+- Bargeldauszahlung
+- BARGELDEINZAHLUNG
+
+**** münzeinwurf
+**** kleine-Münze
+*** bank
+**** Commerzbank
+:PROPERTIES:
+:ID:       4e6a038d-5686-4fd6-bf1f-18f258908a6d
+:END:
+
+**** DeutscheBank
+**** comdirect
+:PROPERTIES:
+:ID:       7d6f5420-da6f-4ebf-8e34-b534c0c0697f
+:END:
+
+***** [[id:1134f365-d0b1-4b78-88ef-881555edf06d][Buchungstext]]
+:PROPERTIES:
+:match-rule: Regexp
+:END:
+
+- comdirect.* End-to-End-Ref
+  
+*** paypal
+:PROPERTIES:
+:ID:       a69aee3e-330f-45e2-a0c4-eef5b3cd7257
+:END:
+
+**** [[id:153396de-b38d-4ae5-829b-00dc1d9bb7bf][remittanceInfo]]
+:PROPERTIES:
+:score: 100
+:END:
+
+- 01PAYPAL
+
+**** [[id:1134f365-d0b1-4b78-88ef-881555edf06d][Buchungstext]]
+:PROPERTIES:
+:match-rule: Regexp
+:END:
+
+- PayPal.* End-to-End-Ref
+- PAYPAL.* End-to-End-Ref
+
+** expenses
+*** food
+**** groceries
+***** Kaufland
+
+****** [[id:98b5197e-af87-4e43-b9c5-125c4fec7589][holderName]]
+:PROPERTIES:
+:ID:       98b5197e-af87-4e43-b9c5-125c4fec7589
+:END:
+
+- KAUFLAND
+
+
+** equity
+*** conversion
+**** [[id:59834a83-4e76-4c0e-a771-2c4c896fc393][event_code]]
+:PROPERTIES:
+:match-rule: Regexp
+:score: 100
+:END:
+
+- T02.*
+
+** revenues
