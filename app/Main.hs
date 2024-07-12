@@ -12,7 +12,7 @@ import Types
 
 main :: IO ()
 main = do
-  logLevelStr <- getEnv "LOG_LEVEL"
+  logLevelStr <- getEnvDft "LOG_LEVEL" "LevelInfo"
   logLevel <-
     forceJust (readMaybe logLevelStr)
       $ AppException ("Could not parse log level: " <> logLevelStr)

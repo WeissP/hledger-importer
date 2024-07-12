@@ -6,6 +6,8 @@ module MyPrelude (
   module RIO,
   module Control.Monad.Except,
   module Control.Monad.Extra,
+  getEnvDft,
+  getEnv,
   maybeToEither,
   wrapShow,
   logException,
@@ -17,7 +19,6 @@ module MyPrelude (
   listDisplay,
   getOrDft,
   replace,
-  getEnv,
   forceRight,
   forceJust,
   LoggerM,
@@ -56,6 +57,7 @@ import RIO.Map qualified as Map
 import RIO.NonEmpty qualified as NE
 import RIO.Text qualified as T
 import System.Environment qualified as S
+import System.Environment.Blank qualified as SB
 
 class ItemsDisplay f where
   displayWithSep :: (Display a) => Builder -> f a -> Utf8Builder
@@ -126,6 +128,9 @@ getOrDft Nothing = def
 
 replace :: Lens' a b -> a -> a -> a
 replace l base new = base & l .~ new ^. l
+
+getEnvDft :: (MonadIO m) => String -> String -> m String
+getEnvDft name dft = liftIO $ SB.getEnvDefault name dft
 
 getEnv :: (MonadIO m) => String -> m String
 getEnv = liftIO . S.getEnv
