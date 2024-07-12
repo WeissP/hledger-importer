@@ -136,7 +136,7 @@ library
     Types.ImportRule
     Types.Record
 
-executable hledger-importer-exe
+executable hledger-importer
   import:         common-options
   hs-source-dirs: app
   main-is:        Main.hs

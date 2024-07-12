@@ -6,7 +6,6 @@
     nixpkgs.follows = "haskellNix/nixpkgs-unstable";
     flake-utils.url = "github:numtide/flake-utils";
     devshell.url = "github:numtide/devshell";
-    # pahs.url = "/home/weiss/projects/pahs/";
   };
   nixConfig = {
     extra-substituters = [ "https://cache.iog.io" ];
@@ -20,7 +19,6 @@
         overlays = [
           haskellNix.overlay
           (final: prev: {
-            # This overlay adds our project to pkgs
             hledger-importer = final.haskell-nix.project' {
               src = ./.;
               compiler-nix-name = "ghc964";
@@ -55,7 +53,7 @@
           };
       in flake // {
         packages = {
-          default = flake.packages."hledger-importer:exe:hledger-importer-exe";
+          default = flake.packages."hledger-importer:exe:hledger-importer";
         };
         devShells = { default = shellWithToml [ ]; };
       });
