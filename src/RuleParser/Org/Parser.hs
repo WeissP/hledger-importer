@@ -86,7 +86,7 @@ parseOrgConfig :: OrgFile -> Either Text OrgConfig
 parseOrgConfig f = do
   (rules, accs) <- case f ^. orgDocL . docSectionsL of
     rs : as : _ -> Right (rs, allAccHeadings as)
-    _ -> Left "Org config should contain at least one heading for parse rules and one heading for Accounts"
+    unknown -> Left $ "Org config should contain at least one heading for parse rules and one heading for Accounts, but got " <> tshow (length unknown) <> " sections"
   (supportedAccs, filters, descs) <- case rules ^. sectionDocL . docSectionsL of
     [supportedAccs, filters, descs] ->
       Right

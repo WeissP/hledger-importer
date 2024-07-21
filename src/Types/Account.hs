@@ -15,7 +15,7 @@ data SupportedAccountInfo = SupportedAccountInfo
   }
   deriving stock (Show)
 
-data SupportedAccountAlias = Paypal | CommerzBank | Comdirect
+data SupportedAccountAlias = Paypal | CommerzBank | Comdirect | Hand
   deriving stock (Show, Read, Eq, Enum, Bounded)
 
 _SupportedAccountAlias :: Prism' AccAlias SupportedAccountAlias

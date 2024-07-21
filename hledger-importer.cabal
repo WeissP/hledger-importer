@@ -118,6 +118,7 @@ library
     Account.Comdirect.Types
     Account.Commerzbank
     Account.Downloadable
+    Account.Hand
     Account.Paypal
     Account.Paypal.Downloader
     Account.Paypal.Parser

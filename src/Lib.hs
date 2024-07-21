@@ -3,6 +3,7 @@ module Lib where
 import Account.Comdirect
 import Account.Commerzbank
 import Account.Downloadable (HasRecordDownloadInfo, downloadJSON)
+import Account.Hand
 import Account.Paypal
 import Conduit
 import Data.Conduit.Combinators qualified as C
@@ -41,8 +42,9 @@ dispatchAcc ::
 dispatchAcc f Paypal = f (Proxy @PaypalRecord)
 dispatchAcc f CommerzBank = f (Proxy @CommerzbankRecord)
 dispatchAcc f Comdirect = f (Proxy @ComdirectRecord)
+dispatchAcc f Hand = f (Proxy @HandRecord)
 
 downloadRecord :: (HasLogFunc env, HasRecordDownloadInfo env) => SupportedAccountAlias -> RIO env ()
 downloadRecord Paypal = downloadJSON $ Proxy @PaypalRecord
 downloadRecord Comdirect = downloadJSON $ Proxy @ComdirectRecord
-downloadRecord CommerzBank = return ()
+downloadRecord _ = return ()
