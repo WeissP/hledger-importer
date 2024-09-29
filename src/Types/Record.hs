@@ -31,6 +31,7 @@ currencyL = iso parse buildUTF8
     parse "€" = Euro
     parse "USD" = USD
     parse "$" = USD
+    parse "JPY" = JPY
     parse raw = UnknownCurrency raw
 
 data ImportComment = ImportComment
