@@ -21,7 +21,7 @@
           (final: prev: {
             hledger-importer = final.haskell-nix.project' {
               src = ./.;
-              compiler-nix-name = "ghc964";
+              compiler-nix-name = "ghc966";
             };
           })
           devshell.overlays.default
