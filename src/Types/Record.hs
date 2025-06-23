@@ -3,6 +3,7 @@ module Types.Record where
 import Data.ByteString.Builder (byteString)
 import Hledger (AccountName, Status (..))
 import MyPrelude
+import RIO.Text.Partial qualified as T'
 
 separator :: Builder
 separator = ";"
@@ -41,9 +42,9 @@ makeLenses ''ImportComment
 instance Display ImportComment where
   display (ImportComment {..}) =
     display
-      -- add quotes to escape separator
-      $ show
-      $ show
+      $ T'.replace "\"" ""
+      $ T'.replace ";" "|"
+      $ tshow
       $ display (maybe "" (<> ", ") _icStr)
       <> displayWithSep ", " ((\(tag, txt) -> tag <> ": " <> txt) <$> _icTags)
 

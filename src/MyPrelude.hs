@@ -18,7 +18,6 @@ module MyPrelude (
   mergeList,
   listDisplay,
   getOrDft,
-  replace,
   forceRight,
   forceJust,
   LoggerM,
@@ -125,9 +124,6 @@ firstJustsM = foldlM go Nothing
 getOrDft :: (Default a) => Maybe a -> a
 getOrDft (Just v) = v
 getOrDft Nothing = def
-
-replace :: Lens' a b -> a -> a -> a
-replace l base new = base & l .~ new ^. l
 
 getEnvDft :: (MonadIO m) => String -> String -> m String
 getEnvDft name dft = liftIO $ SB.getEnvDefault name dft
