@@ -6,7 +6,7 @@ cradle:
     - path: "src"
       config: {cradle: {cabal: {component: "lib:hledger-importer"}}}
 
-    - path: "app"
+    - path: "app" 
       config: {cradle: {cabal: {component: "hledger-importer:hledger-importer-exe"}}}
 
     - path: "test"

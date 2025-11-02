@@ -33,6 +33,7 @@ currencyL = iso parse buildUTF8
     parse "USD" = USD
     parse "$" = USD
     parse "JPY" = JPY
+    parse "TWD" = TWD
     parse raw = UnknownCurrency raw
 
 data ImportComment = ImportComment

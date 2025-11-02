@@ -6,7 +6,7 @@ import RIO.List qualified as L
 import Types
 
 getLatestDay :: (HasLogFunc env) => Journal -> AccountName -> RIO env Day
-getLatestDay j n = logInfo "START is not specified, trying to get latest day in journal files" >> fromMaybeM dftDay (return d)
+getLatestDay j n = fromMaybeM dftDay (return d)
   where
     q = Acct $ toRegex' n
     ts = filter (q `matchesTransaction`) $ jtxns j

@@ -36,7 +36,7 @@ module MyPrelude (
   module Data.Either.Extra,
 ) where
 
-import Control.Lens as X
+import Control.Lens as X hiding ((<.>))
 import Control.Monad.Except
 import Control.Monad.Extra hiding (mapMaybeM, unlessM, whenM)
 import Control.Monad.Trans.Maybe as X

@@ -2,9 +2,12 @@ module AppTypes where
 
 import Account.Downloadable
 import Hledger (Journal)
+import Hledger.Cli.Script (maximumMay)
 import JournalParser (getLatestDay)
 import MyPrelude
-import Options.Applicative (ReadM, maybeReader)
+import RIO.FilePath (splitFileName, (<.>), (</>))
+import RIO.FilePath qualified as F
+import RIO.Text qualified as T
 import RIO.Time
 import SupportedAccount
 import Types
@@ -68,6 +71,25 @@ getSai alias = do
       (AppException $ "account" <> show alias <> " not found")
   return sai
 
+{- | Copied from Hledger library as it is not exported
+Try to parse a couple of date string formats:
+`YYYY-MM-DD`, `YYYY/MM/DD` or `YYYY.MM.DD`, with leading zeros required.
+For internal use, not quite the same as the journal's "simple dates".
+>>> parsedateM "2008/02/03"
+Just 2008-02-03
+>>> parsedateM "2008/02/03/"
+Nothing
+>>> parsedateM "2008/02/30"
+Nothing
+-}
+parsedateM :: String -> Maybe Day
+parsedateM s =
+  asum
+    [ parseTimeM True defaultTimeLocale "%Y-%m-%d" s
+    , parseTimeM True defaultTimeLocale "%Y/%m/%d" s
+    , parseTimeM True defaultTimeLocale "%Y.%m.%d" s
+    ]
+
 getRecordDownloadInfo ::
   SupportedAccountAlias ->
   RIO (WithLogFunc AppEnv) RecordDownloadInfo
@@ -76,8 +98,18 @@ getRecordDownloadInfo alias = do
   start <-
     fromMaybeM
       do
-        j <- view appJournal
-        getLatestDay j $ saiAccountName sai
+        fromMaybeM
+          do
+            logInfo "Failed to parse .latest.*, trying to get latest day in journal files"
+            j <- view appJournal
+            getLatestDay j $ saiAccountName sai
+          do
+            logInfo "START is not specified, trying to get latest day from .latest.*"
+            let (dir, n) = splitFileName $ saiImportRecordsPath sai
+            let p = dir </> ".latest" <.> n
+            t <- readFileUtf8 p
+            logDebug $ "content of " <> display p <> ": " <> displayShow t
+            return $ maximumMay $ mapMaybe (parsedateM . T.unpack . T.strip) (T.lines t)
       do view appStart
   end <- view appEnd
   let path = saiRawRecordsPath sai

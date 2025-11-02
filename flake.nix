@@ -53,7 +53,7 @@
           };
       in flake // {
         packages = {
-          default = flake.packages."hledger-importer:exe:hledger-importer";
+          default = flake.packages."hledger-importer:exe:hledger-importer-exe";
         };
         devShells = { default = shellWithToml [ ]; };
       });

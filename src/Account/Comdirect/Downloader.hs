@@ -17,7 +17,6 @@ import Network.Wreq qualified as NW
 import RIO.ByteString (getLine, putStr)
 import RIO.ByteString.Lazy qualified as BL
 import RIO.Process (mkDefaultProcessContext)
-import RIO.Time (Day (ModifiedJulianDay))
 
 instance ApiRecord (WithLogFunc ComdirectAccessEnv) ComdirectRecord where
   arGet = getComdirectRecords
