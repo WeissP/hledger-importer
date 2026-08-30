@@ -15,6 +15,7 @@ data Currency
   | RMB
   | USD
   | TWD
+  | GBP
   deriving stock (Generic, Show)
 
 instance Display Currency where
@@ -24,7 +25,8 @@ instance Display Currency where
   display RMB = "RMB"
   display USD = "$"
   display TWD = "TWD"
-
+  display GBP = "£"
+ 
 currencyL :: Iso' ByteString Currency
 currencyL = iso parse buildUTF8
   where
@@ -34,6 +36,7 @@ currencyL = iso parse buildUTF8
     parse "$" = USD
     parse "JPY" = JPY
     parse "TWD" = TWD
+    parse "£" = GBP
     parse raw = UnknownCurrency raw
 
 data ImportComment = ImportComment
