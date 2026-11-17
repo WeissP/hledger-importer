@@ -5,11 +5,15 @@ import Hledger (accountLeafName)
 import MyPrelude
 import RIO.List qualified as L
 import RIO.Map qualified as Map
+import RIO.Text qualified as T
 import Text.Regex.TDFA ((=~))
 import Types
 
 match :: ByteString -> Matcher -> Bool
 match doc (Matcher Contains str) = str `B.isInfixOf` doc
+match doc (Matcher IContains str) = fold str `T.isInfixOf` fold doc
+  where
+    fold = T.toCaseFold . decodeUtf8Lenient
 match doc (Matcher Regexp str) = doc =~ str
 
 catchByGroup ::

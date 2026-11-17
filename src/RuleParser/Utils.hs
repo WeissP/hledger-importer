@@ -20,6 +20,8 @@ ifLeft b = iso (fromRight b) Right
 parseMatchRule :: Text -> MatchRule
 parseMatchRule "Contains" = Contains
 parseMatchRule "contains" = Contains
+parseMatchRule "IContains" = IContains
+parseMatchRule "icontains" = IContains
 parseMatchRule "Regexp" = Regexp
 parseMatchRule "regexp" = Regexp
 parseMatchRule unknown =

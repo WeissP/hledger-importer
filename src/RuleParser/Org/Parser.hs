@@ -50,7 +50,7 @@ dateFormatL = propL "date-format" . ifLeft "%d.%m.%Y" . re isoBsT
 
 matchRuleL :: Getter Section MatchRule
 matchRuleL =
-  to $ \x -> x ^. propL "match-rule" ^? _Right . to parseMatchRule ^. non Contains
+  to $ \x -> x ^. propL "match-rule" ^? _Right . to parseMatchRule ^. non IContains
 
 accHeadingsL :: Getter Section [OrgAccHeading]
 getAccHeadings :: Section -> [OrgAccHeading]

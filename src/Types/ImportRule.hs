@@ -17,7 +17,8 @@ type DateFormat = ByteString
 data Matcher = Matcher {matchRule :: MatchRule, matchStr :: ByteString}
   deriving stock (Show)
 
-data MatchRule = Contains | Regexp deriving stock (Show, Eq)
+-- | 'IContains' is a case-insensitive 'Contains' (Unicode case folding).
+data MatchRule = Contains | IContains | Regexp deriving stock (Show, Eq)
 makePrisms ''MatchRule
 
 groupLabelCGs :: [LabelCG a] -> [LabelCG a]
